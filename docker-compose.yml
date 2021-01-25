@@ -1,0 +1,151 @@
+version: "3.5"
+
+volumes:
+  logica-sandbox-volume:
+
+services:
+
+  keycloak:
+    image: jboss/keycloak
+    volumes:
+      - "./realm_properties.json:/etc/security/realm_properties.json"
+    ports:
+      - "8080:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/etc/security/realm_properties.json
+    command: ["-Djboss.http.port=8080", "-Dkeycloak.profile.feature.upload_scripts=enabled"]
+
+  sandbox-mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - logica-sandbox-volume:/var/lib/mysql
+    environment:
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    container_name: communityedition_sandbox-mysql
+
+  sandbox-manager-api:
+    image: hspconsortium/sandbox-manager-api:1.3.6
+    ports:
+      - "12000:12000"
+    environment:
+      - DB_HOST=sandbox-mysql
+      - DB_PORT=3306
+      - DB_NAME=sandman
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - AUTH_HOST=reference-auth
+      - AUTH_PORT=8060
+      - API_DSTU2_HOST=dstu2
+      - API_STU3_HOST=stu3
+      - API_R4_HOST=r4
+    depends_on:
+      - sandbox-mysql
+
+  reference-auth:
+    image: gopalinteropion/auth
+    ports:
+      - "8060:8060"
+    environment:
+      - AUTH_HOST=reference-auth
+      - AUTH_PORT=8060
+      - DB_NAME=oic
+      - DB_HOST=sandbox-mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - SHOW_SQL=true
+      - API_DSTU2_HOST=dstu2
+      - API_DSTU2_PORT=8078
+      - API_STU3_HOST=stu3
+      - API_STU3_PORT=8079
+      - API_R4_HOST=r4
+      - API_R4_PORT=8070
+      - PATIENT_PICKER_HOST=localhost
+      - PATIENT_PICKER_PORT=8094
+      - SANDMAN_API_HOST=sandbox-manager-api
+      - SANDMAN_API_PORT=12000
+      - SPRING_PROFILES_ACTIVE=users-keycloak,local
+      - KEYCLOAK_REALM=Development
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/auth
+      - KEYCLOAK_SSL_REQUIRED=none
+      - KEYCLOAK_CREDENTIALS=593ada9c-b1dc-444f-a2e6-30cc4add8146
+      - KEYCLOAK_LOGOUT_SUCCESS_URL=http://keycloak:8080/auth/realms/Development/protocol/openid-connect/logout?redirect_uri=http://localhost:3001
+    depends_on:
+      - sandbox-mysql
+
+  sandbox-manager-prototype:
+    image: gopalinteropion/sandbox-manager-prototype
+    ports:
+      - "3001:3000"
+
+  dstu2:
+    image: hspconsortium/api:2.9.0
+    ports:
+      - "8078:8078"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dstu2,multitenant
+      - API_PORT=8078
+      - SANDBOX_NAME=hspc8
+      - SBMA_HOST=sandbox-manager-api
+      - SBMA_PORT=12000
+      - DB_HOST=sandbox-mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - AUTH_HOST=reference-auth
+      - AUTH_PORT=8060
+      - MANIFEST_OVERRIDE=false
+    depends_on:
+      - sandbox-mysql
+      - reference-auth
+
+  stu3:
+    image: hspconsortium/api:2.9.0
+    ports:
+      - "8079:8079"
+    environment:
+      - SPRING_PROFILES_ACTIVE=stu3,multitenant
+      - API_PORT=8079
+      - SANDBOX_NAME=hspc9
+      - SBMA_HOST=sandbox-manager-api
+      - SBMA_PORT=12000
+      - DB_HOST=sandbox-mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - AUTH_HOST=reference-auth
+      - AUTH_PORT=8060
+      - MANIFEST_OVERRIDE=false
+    depends_on:
+      - sandbox-mysql
+      - reference-auth
+
+  r4:
+    image: hspconsortium/api:2.9.0
+    ports:
+      - "8070:8070"
+    environment:
+      - SPRING_PROFILES_ACTIVE=r4,multitenant
+      - API_PORT=8070
+      - SANDBOX_NAME=hspc10
+      - SBMA_HOST=sandbox-manager-api
+      - SBMA_PORT=12000
+      - DB_HOST=sandbox-mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - AUTH_HOST=reference-auth
+      - AUTH_PORT=8060
+      - MANIFEST_OVERRIDE=false
+    depends_on:
+      - sandbox-mysql
+      - reference-auth
+
+networks:
+  default:
+    external: true
+    name: logica-network
