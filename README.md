@@ -105,20 +105,25 @@ NOTE: let’s make this a script… seed-database.sh maybe?
    ```
     
     This should list out the database schemas:
-    
-    Database  |
-    -------------------------|
-    hspc_8_MasterDstu2Empty|
-    hspc_8_MasterDstu2Smart |
-    hspc_8_MasterR4Empty |   
-    hspc_8_MasterR4Smart  |  
-    hspc_8_MasterStu3Empty | 
-    hspc_8_MasterStu3Smart  |
-    hspc_8_hspc10           |
-    hspc_8_hspc8            |
-    hspc_8_hspc9            |
-    oic                     |
-    sandman                 |
+
+    ```
+    +-------------------------+
+    | Database                |
+    +-------------------------+
+    | hspc_8_MasterDstu2Empty |
+    | hspc_8_MasterDstu2Smart |
+    | hspc_8_MasterR4Empty    |
+    | hspc_8_MasterR4Smart    |
+    | hspc_8_MasterStu3Empty  |
+    | hspc_8_MasterStu3Smart  |
+    | hspc_8_hspc10           |
+    | hspc_8_hspc8            |
+    | hspc_8_hspc9            |
+    | oic                     |
+    | sandman                 |
+    | sys                     |
+    +-------------------------+
+    ```
 
     Make sure that the schemas listed above show up. There may be additional schemas listed, but that is not an issue.
     Exit the bash prompt of the MySQL container by running the following command
