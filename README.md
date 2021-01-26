@@ -1,13 +1,13 @@
 # Sandbox Community Edition
 Repository for the free community edition of the sandbox
 
-##Installation
+## Installation
 The following document will outline downloading and installing the Logica Sandbox Community Edition and getting it running.
 This document is broken into four sections. An “Overview” which outlines what is required to get the system running and then three installation sections… one each for MacOS, Linux, and Windows installations. Versions of the operating systems used and tested and the versions of any tools will be explicitly stated where appropriate. We recognize tools change over time and the content of this document may be out-of-date by the time you read this. We hope to give you enough information to adjust to new versions as needed. Some of the information in this document may seem remedial but we are including it anyway for those who may not be as familiar with the command line and other tools involved in the setup.
 NOTE: The community edition is currently using HAPI 4.2.0. The Enterprise edition currently running online will soon be at HAPI 5.2.0. 
 WARNING: Follow these instructions VERY carefully. If you miss a step… you will likely get pages and pages of errors.
 
-##Overview
+## Overview
 Running the sandbox locally on any OS requires the following:
 * Docker (tested with Docker Desktop v3.0.4)
 * MySQL container populated from sql scripts
@@ -43,7 +43,7 @@ The sandbox also uses a number of internal redirects built into the user interfa
 This tells the web browser on the local machine that, for example, “http://r4/”  will be found listening on the local machine… assuming the container is running.
 Installation directory:
 
-## MacOS Install
+## Mac OS Install
 
 OSX Install (tested under macOS Catalina 10.15.7):
 There are two options to install Docker Desktop. Either install it by going to the website, downloading it, and running the dmg file… or install “homebrew” and then use homebrew to install it. For the minimum… just install Docker Desktop. Homebrew is a package manager for installing all sorts of tools and utilities… but you may not want it. If docker is already installed please skip ahead to setting it up to give the containers enough memory.
@@ -57,58 +57,75 @@ Install Docker Desktop from the Docker website:
 
 Setting up Docker Desktop:
 	Run the Docker Desktop app and set the memory allocation requirements by clicking on the gear in the top right corner of the main dialog… then Resources… then ADVANCED:
+![Docker Settings](./images/docker_settings.png)
 
 Set Memory to a minimum of 8.00 GB:
-
+![Docker Memory](./images/docker_memory.png)
 Now instances will get the memory they require to run correctly. If you are running into memory issues with the containers this is most likely the culprit.
 
 ## Download and Install
-First, download community-edition.zip and unzip it into /Users/Shared. When finished… you should have the directory /Users/Shared/community-edition containing the docker-compose.yml file, a number of .sql files, and a number of .sh and .bat files.
-
-NOTE: If homebrew and curl are installed you can do all this with the following command:
-Open a terminal window and run the following command:
-curl https://neuronsong.com/_/_upload/server/php/files/community-edition.zip | tar -xf - --C -C /Users/Shared
-This pulls down a copy of the community-edition.zip and unzips it into /Users/Shared
-If everything went well you will now have the required files in:
-/Users/Shared/community-edition
-Change into the directory created from the zip file
-      cd /Users/Shared/community-edition
-Set up a logical network for docker to use
-      docker network create logica-network
-Download and run the mysql instance
-      docker-compose up -d sandbox-mysql
-Populate the mysql database from the sql scripts
+1. Clone this project 
+	```sh
+	git clone https://github.com/logicahealth/sandbox-community-edition.git
+	```
+2. Change to the new directory
+	```sh
+	cd sandbox-community-edition
+	```
+3. Set up a logical network for docker to use
+    ```sh
+   docker network create logica-network
+   ```
+4. Download and run the mysql instance
+    ```sh 
+    docker-compose up -d sandbox-mysql
+    ```
+5. Populate the mysql database from the sql scripts
 NOTE: let’s make this a script… seed-database.sh maybe?
-     for i in *.sql; do docker exec -i communityedition_sandbox-mysql mysql -uroot -ppassword < $i; done
-## Confirm that the database schemas imported successfully (optional step)
-Run the following command to go to the bash prompt of the MySQL container. 
+    ```sh 
+   for i in *.sql; do 
+        echo $i;
+        docker exec -i communityedition_sandbox-mysql mysql -uroot -ppassword < $i; 
+   done
+   ```
+6. Confirm that the database schemas imported successfully (optional step). Run the following command to go to the bash prompt of the MySQL container. 
+   ```sh
     docker exec -it communityedition_sandbox-mysql bash
-Run this to connect to the database and list out the schemas
-mysql -uroot -ppassword -e "show databases;"
+   ```
     
-This should list out the database schemas:
-+-------------------------+
-| Database                |
-+-------------------------+
-| hspc_8_MasterDstu2Empty |
-| hspc_8_MasterDstu2Smart |
-| hspc_8_MasterR4Empty    |
-| hspc_8_MasterR4Smart    |
-| hspc_8_MasterStu3Empty  |
-| hspc_8_MasterStu3Smart  |
-| hspc_8_hspc10           |
-| hspc_8_hspc8            |
-| hspc_8_hspc9            |
-| oic                     |
-| sandman                 |
-| sys                     |
-+-------------------------+
+    Run this to connect to the database and list out the schemas
+    ```sh
+    mysql -uroot -ppassword -e "show databases;"
+   ```
+    
+    This should list out the database schemas:
+    
+Database  |
+-------------------------|
+hspc_8_MasterDstu2Empty|
+hspc_8_MasterDstu2Smart |
+hspc_8_MasterR4Empty |   
+hspc_8_MasterR4Smart  |  
+hspc_8_MasterStu3Empty | 
+hspc_8_MasterStu3Smart  |
+hspc_8_hspc10           |
+hspc_8_hspc8            |
+hspc_8_hspc9            |
+oic                     |
+sandman                 |
+
 Make sure that the schemas listed above show up. There may be additional schemas listed, but that is not an issue.
 Exit the bash prompt of the MySQL container by running the following command
-   exit
+
+   ```sh
+    exit
+   ```
 ## Starting the sandbox
 In the same terminal window… or another terminal window... run the following:
-	docker-compose up
+    ```sh
+    docker-compose up
+    ```
+	
 This will start the services for the sandbox. Images for the containers will be downloaded from docker hub. This process may take a while the first time… and produce a lot of logging output.
 To check if things are running open another terminal window and run:
 	docker-compose ps
