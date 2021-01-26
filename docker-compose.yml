@@ -145,6 +145,11 @@ services:
       - sandbox-mysql
       - reference-auth
 
+  static-content:
+    image: gopalinteropion/sandbox-ce-static-content
+    ports:
+      - "8090:80"
+
 networks:
   default:
     external: true
