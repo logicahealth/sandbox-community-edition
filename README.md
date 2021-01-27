@@ -298,7 +298,7 @@ Install docker desktop for your distribution of Linux.
     ```sh
     sudo docker-compose ps
     ```
-    You should see something similar to the screen print below showing that 8 processes are with status Up.
+    You should see something similar to the screen print below showing that 11 processes are with status Up.
     ```
                             Name                                       Command               State                         Ports                      
     --------------------------------------------------------------------------------------------------------------------------------------------------
