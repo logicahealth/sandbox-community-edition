@@ -155,6 +155,11 @@ services:
     ports:
       - "8086:8086"
 
+  patient-data-manager:
+    image: gopalinteropion/patient-data-manager
+    ports:
+      - "8096:8096"
+
 networks:
   default:
     external: true
