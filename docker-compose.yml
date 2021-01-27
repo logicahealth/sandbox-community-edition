@@ -150,6 +150,11 @@ services:
     ports:
       - "8090:80"
 
+  bilirubin-risk-chart:
+    image: gopalinteropion/bilirubin-risk-chart-app
+    ports:
+      - "8086:8086"
+
 networks:
   default:
     external: true
