@@ -18,7 +18,7 @@ Running the sandbox locally on any OS requires the following:
 * Sandbox containers
 * FHIR server containers
 
-In the current configuration there will be a total of 8 containers. These containers listen on specific network TCP ports as described in the next section.
+In the current configuration there will be a total of 11 containers. These containers listen on specific network TCP ports as described in the next section.
 
 Setting up the networking environment on your machine:
 
@@ -30,9 +30,12 @@ The sandbox makes use of the following TCP ports and may conflict with services 
 * 8078 - FHIR DSTU2 server
 * 8079 - FHIR STU3 server
 * 8080 - Keycloak authentication server
-* 12000 - Sandbox manager server
+* 8086 - Bilirubin Risk Chart sample app
+* 8090 - Static content server
+* 8096 - Patient Data Manager sample app
+* 12000 - Sandbox Manager server
 
-Stop any current services running on these ports before running the containers. A script to check for anything listening on these ports (check-ports.sh and check-ports.bat) is included in the community-edition.zip file. Most conflicts will occur when a developer has something running on one of these ports. If you have a MySQL server running you will likely get a conflict on port 3306.
+Stop any current services running on these ports before running the containers. A script to check for anything listening on these ports (check-ports.sh and check-ports.bat) is included in the community edition. Most conflicts will occur when a developer has something running on one of these ports. If you have a MySQL server running you will likely get a conflict on port 3306.
 
 The sandbox also uses a number of internal redirects built into the user interface requiring modification of the hosts file (/etc/hosts on macOS and linux)
 
@@ -43,6 +46,7 @@ The sandbox also uses a number of internal redirects built into the user interfa
 * 127.0.0.1 dstu2
 * 127.0.0.1 stu3
 * 127.0.0.1 r4
+* 127.0.0.1 static-content
 
 This tells the web browser on the local machine that, for example, “http://r4/”  will be found listening on the local machine… assuming the container is running.
 
@@ -78,7 +82,7 @@ Now instances will get the memory they require to run correctly. If you are runn
 	```sh
 	cd sandbox-community-edition
 	```
-3. Set up a logical network for docker to use
+3. Set up an internal network for docker to use
     ```sh
    docker network create logica-network
    ```
@@ -149,13 +153,16 @@ You should see something like this… showing the running instances… and the p
                         Name                                       Command               State                         Ports                      
 --------------------------------------------------------------------------------------------------------------------------------------------------
 communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp, 33060/tcp                
+sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8086->8086/tcp                           
 sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8078->8078/tcp                           
 sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Up      0.0.0.0:8080->8080/tcp, 8443/tcp                 
+sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8096->8096/tcp                           
 sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8070->8070/tcp                           
 sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Up      0.0.0.0:8060->8060/tcp                           
 sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:12000->12000/tcp                         
 sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Up      1935/tcp, 0.0.0.0:3001->3000/tcp, 443/tcp, 80/tcp
-sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8079->8079/tcp     
+sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Up      0.0.0.0:8090->80/tcp                             
+sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8079->8079/tcp    
 ```
 
 In a web browser (preferably Chrome) go to http://localhost:3001. You should see a Keycloak login screen like the following. Click on register and fill in your details.
@@ -177,14 +184,17 @@ In another terminal window show the running servers
    ```
 Run the `check-ports.sh` shell script to see the services listening on ports. If you get an error saying permission is denied, then run the command `chmod +x check-ports.sh`.
 ```
-com.docke   698 gopalmenon   82u  IPv6 0xc9b8f9c3b09d6f7      0t0  TCP *:3001 (LISTEN)
-com.docke   698 gopalmenon   81u  IPv6 0xc9b8f9c3b027097      0t0  TCP *:3306 (LISTEN)
-com.docke   698 gopalmenon   83u  IPv6 0xc9b8f9c27adf3b7      0t0  TCP *:8060 (LISTEN)
-com.docke   698 gopalmenon   85u  IPv6 0xc9b8f9c3b09e3b7      0t0  TCP *:8070 (LISTEN)
-com.docke   698 gopalmenon   87u  IPv6 0xc9b8f9c29c87a17      0t0  TCP *:8078 (LISTEN)
-com.docke   698 gopalmenon   86u  IPv6 0xc9b8f9c2c86d097      0t0  TCP *:8079 (LISTEN)
-com.docke   698 gopalmenon   67u  IPv6 0xc9b8f9c268fea17      0t0  TCP *:8080 (LISTEN)
-com.docke   698 gopalmenon   84u  IPv6 0xc9b8f9c3b09ea17      0t0  TCP *:12000 (LISTEN)
+com.docke   698 gopalmenon   84u  IPv6 0xc9b8f9c3369a097      0t0  TCP *:3001 (LISTEN)
+com.docke   698 gopalmenon   83u  IPv6 0xc9b8f9c227ec6f7      0t0  TCP *:3306 (LISTEN)
+com.docke   698 gopalmenon   90u  IPv6 0xc9b8f9c35f4d3b7      0t0  TCP *:8060 (LISTEN)
+com.docke   698 gopalmenon   92u  IPv6 0xc9b8f9c28be8d57      0t0  TCP *:8070 (LISTEN)
+com.docke   698 gopalmenon   91u  IPv6 0xc9b8f9c20d0dd57      0t0  TCP *:8078 (LISTEN)
+com.docke   698 gopalmenon   93u  IPv6 0xc9b8f9c35f4cd57      0t0  TCP *:8079 (LISTEN)
+com.docke   698 gopalmenon   87u  IPv6 0xc9b8f9c2c86ea17      0t0  TCP *:8080 (LISTEN)
+com.docke   698 gopalmenon   85u  IPv6 0xc9b8f9c3369b3b7      0t0  TCP *:8086 (LISTEN)
+com.docke   698 gopalmenon   88u  IPv6 0xc9b8f9c2c86d6f7      0t0  TCP *:8090 (LISTEN)
+com.docke   698 gopalmenon   86u  IPv6 0xc9b8f9c2c86e3b7      0t0  TCP *:8096 (LISTEN)
+com.docke   698 gopalmenon   89u  IPv6 0xc9b8f9c2c86d097      0t0  TCP *:12000 (LISTEN)
 ```
 Use the following command to stop them.
 ```sh
@@ -192,6 +202,9 @@ docker-compose stop
 ```
 You will see something like this as the containers are stopped:
 ```
+Stopping sandbox-community-edition_static-content_1            ... done
+Stopping sandbox-community-edition_patient-data-manager_1      ... done
+Stopping sandbox-community-edition_bilirubin-risk-chart_1      ... done
 Stopping sandbox-community-edition_keycloak_1                  ... done
 Stopping sandbox-community-edition_stu3_1                      ... done
 Stopping sandbox-community-edition_r4_1                        ... done
@@ -209,13 +222,16 @@ Running `docker-compose ps` will show something like the following:
                         Name                                       Command                State     Ports
 ---------------------------------------------------------------------------------------------------------
 communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Exit 0          
+sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Exit 0          
 sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Exit 137        
 sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Exit 0          
+sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Exit 0          
 sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Exit 137        
 sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Exit 137        
 sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Exit 137        
 sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Exit 0          
-sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Exit 137     
+sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Exit 0          
+sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Exit 137  
 ```
 ## Linux Install
 Install docker desktop for your distribution of Linux. 
@@ -266,6 +282,7 @@ Install docker desktop for your distribution of Linux.
     127.0.0.1  dstu2
     127.0.0.1  stu3
     127.0.0.1  r4
+    127.0.0.1  static-content
     ```
 
     Here is an example of using nano to edit `/etc/hosts`
@@ -283,16 +300,19 @@ Install docker desktop for your distribution of Linux.
     ```
     You should see something similar to the screen print below showing that 8 processes are with status Up.
     ```
-                        Name                                   Command               State                         Ports                      
-    ------------------------------------------------------------------------------------------------------------------------------------------
-    community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8078->8078/tcp                           
-    community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Up      0.0.0.0:8080->8080/tcp, 8443/tcp                 
-    community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8070->8070/tcp                           
-    community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Up      0.0.0.0:8060->8060/tcp                           
-    community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:12000->12000/tcp                         
-    community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Up      1935/tcp, 0.0.0.0:3001->3000/tcp, 443/tcp, 80/tcp
-    community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8079->8079/tcp                           
-    communityedition_sandbox-mysql                  docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp, 33060/tcp 
+                            Name                                       Command               State                         Ports                      
+    --------------------------------------------------------------------------------------------------------------------------------------------------
+    communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp, 33060/tcp                
+    sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8086->8086/tcp                           
+    sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8078->8078/tcp                           
+    sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Up      0.0.0.0:8080->8080/tcp, 8443/tcp                 
+    sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8096->8096/tcp                           
+    sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8070->8070/tcp                           
+    sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Up      0.0.0.0:8060->8060/tcp                           
+    sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:12000->12000/tcp                         
+    sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Up      1935/tcp, 0.0.0.0:3001->3000/tcp, 443/tcp, 80/tcp
+    sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Up      0.0.0.0:8090->80/tcp                             
+    sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8079->8079/tcp       
     ```
 11. Go to http://localhost:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
 12. To stop the sandbox
