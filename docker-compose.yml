@@ -18,11 +18,11 @@ services:
     command: ["-Djboss.http.port=8080", "-Dkeycloak.profile.feature.upload_scripts=enabled"]
 
   sandbox-mysql:
-    image: mysql:5.7
+    image: gopalinteropion/sandbox-mysql
     ports:
       - "3306:3306"
     volumes:
-      - logica-sandbox-volume:/var/lib/mysql
+      - logica-sandbox-volume:/var/lib/mysql57
     environment:
       - MYSQL_PASSWORD=password
       - MYSQL_ROOT_PASSWORD=password
