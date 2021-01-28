@@ -121,7 +121,7 @@ Now instances will get the memory they require to run correctly. If you are runn
     +-------------------------+
     ```
 
-    Make sure that the schemas listed above show up. There may be additional schemas listed, but that is not an issue.
+    Make sure the schemas listed above show up. All the required schemas may not immediately show, and you would need to wait and run the command again till all the required schemas are listed. There may be additional schemas listed, but that is not an issue.
     Exit the bash prompt of the MySQL container by running the following command
 
    ```sh
