@@ -81,15 +81,11 @@ Now instances will get the memory they require to run correctly. If you are runn
     ```sh
     cd sandbox-community-edition
     ```
-3. Set up an internal network for docker to use
-    ```sh
-    docker network create logica-network
-    ```
-4. Download and run the mysql instance. This will download the database image containing template schemas.
+3. Download and run the mysql instance. This will download the database image containing template schemas.
     ```sh 
     docker-compose up -d sandbox-mysql
     ```
-5. (optional) Confirm that the database schemas are part of the pre-populated database image. Run the following command to go to the bash prompt of the MySQL container. 
+4. (optional) Confirm that the database schemas are part of the pre-populated database image. Run the following command to go to the bash prompt of the MySQL container. 
    ```sh
    docker exec -it communityedition_sandbox-mysql bash
    ```
@@ -237,15 +233,11 @@ Install docker desktop for your distribution of Linux.
 	```sh
 	cd sandbox-community-edition
 	```
-3. Create a docker network using the command
-    ```sh
-    sudo docker network create logica-network
-    ```
-4. Start the MySQL container 
+3. Start the MySQL container 
     ```sh
     sudo docker-compose up -d sandbox-mysql
     ```
-5. Run the following command to make sure that the MySQL container is up
+4. Run the following command to make sure that the MySQL container is up
     ```sh
     sudo docker-compose ps
     ```
@@ -255,11 +247,11 @@ Install docker desktop for your distribution of Linux.
     -----------------------------------------------------------------------------------------------------------------------------
     communityedition_sandbox-mysql                  docker-entrypoint.sh mysqld      Up         0.0.0.0:3306->3306/tcp, 33060/tcp
     ```
-6. Run the following command to bring down the database
+5. Run the following command to bring down the database
     ```sh
     sudo docker-compose stop
     ```
-7. Add the following rows to the file /etc/hosts using a text editor
+6. Add the following rows to the file /etc/hosts using a text editor
     ```
     127.0.0.1  keycloak
     127.0.0.1  sandbox-mysql
@@ -276,11 +268,11 @@ Install docker desktop for your distribution of Linux.
     ```sh
     sudo nano /etc/hosts
     ```
-8. Now start the sandbox using the command
+7. Now start the sandbox using the command
     ```sh
     docker-compose up
     ```
-9. Run the following command to see a list of docker processes that are running.
+8. Run the following command to see a list of docker processes that are running.
     ```sh
     sudo docker-compose ps
     ```
@@ -300,8 +292,8 @@ Install docker desktop for your distribution of Linux.
     sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Up      0.0.0.0:8090->80/tcp                             
     sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8079->8079/tcp       
     ```
-10. Go to http://localhost:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
-11. To stop the sandbox
+9. Go to http://localhost:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
+10. To stop the sandbox
     ```sh
     sudo docker-compose stop
     ```

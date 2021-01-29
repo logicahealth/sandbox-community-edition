@@ -160,7 +160,8 @@ services:
     ports:
       - "8096:8096"
 
-networks:
-  default:
-    external: true
-    name: logica-network
+  ehr-simulator:
+    image: hspconsortium/ehr-app:0.6.13
+    ports:
+      - "3000:3000"
+
