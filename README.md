@@ -88,7 +88,19 @@ In the same terminal window or another terminal window run the following:
     docker-compose up
    ```
 	
-This will start the services for the sandbox. Images for the containers will be downloaded from docker hub. This process may take a while the first time and produce a lot of logging output.
+This will start the services for the sandbox. At first, you will see something like the following
+    
+   ```sh
+    Creating network "sandbox-community-edition_default" with the default driver
+    Creating sandbox-community-edition_static-content_1            ... done
+    Creating sandbox-community-edition_patient-data-manager_1      ... done
+    Creating communityedition_sandbox-mysql                        ... done
+    Creating sandbox-community-edition_bilirubin-risk-chart_1      ... done
+    Creating sandbox-community-edition_keycloak_1                  ... done
+    Creating sandbox-community-edition_sandbox-manager-prototype_1 ... done
+    Creating sandbox-community-edition_ehr-simulator_1             ... done
+   ```
+The output will stay unchanged for a while the database is being seeded. After the database seeding is completed, you will see other services that depend on the database start up. Images for the containers will be downloaded from docker hub. This process may take a while the first time and produce a lot of logging output.
 
 To check if things are running open another terminal window and run:
    ```sh
