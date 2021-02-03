@@ -100,7 +100,7 @@ This will start the services for the sandbox. At first, you will see something l
     Creating sandbox-community-edition_sandbox-manager-prototype_1 ... done
     Creating sandbox-community-edition_ehr-simulator_1             ... done
    ```
-The output will stay unchanged for a while the database is being seeded. After the database seeding is completed, you will see other services that depend on the database start up. Images for the containers will be downloaded from docker hub. This process may take a while the first time and produce a lot of logging output.
+The output will stay unchanged while the database is being seeded. After the database seeding is completed, you will see other services that depend on the database start up. Images for the containers will be downloaded from docker hub. This process may take a while the first time and produce a lot of logging output.
 
 To check if things are running open another terminal window and run:
    ```sh
