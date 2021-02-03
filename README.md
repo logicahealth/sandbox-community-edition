@@ -11,17 +11,18 @@ This document outlines downloading and installing the Logica Sandbox Community E
 ## Overview
 Running the sandbox locally on any OS requires the following:
 * Docker (tested with Docker Desktop v3.0.4)
-* MySQL container populated from sql scripts
+* MySQL container 
 * Keycloak server container
 * Sandbox containers
 * FHIR server containers
 * Application containers
 
-In the current configuration there will be a total of 11 containers. These containers listen on specific network TCP ports as described in the next section.
+In the current configuration there will be a total of 12 containers. These containers listen on specific network TCP ports as described in the next section.
 
 ### Setting up the networking environment on your machine
 
 The sandbox makes use of the following TCP ports and may conflict with services already running on your system:
+* 3000 - EHR Simulator
 * 3001 - http (user interface) server
 * 3306 - MySQL 5.7 database server
 * 8060 - OAuth server
@@ -81,47 +82,6 @@ Now instances will get the memory they require to run correctly. If you are runn
     ```sh
     cd sandbox-community-edition
     ```
-3. Download and run the mysql instance. This will download the database image containing template schemas.
-    ```sh 
-    docker-compose up -d sandbox-mysql
-    ```
-4. (optional) Confirm that the database schemas are part of the pre-populated database image. Run the following command to go to the bash prompt of the MySQL container. 
-   ```sh
-   docker exec -it communityedition_sandbox-mysql bash
-   ```
-    
-    Run this to connect to the database and list out the schemas
-    ```sh
-    mysql -uroot -ppassword -e "show databases;"
-   ```
-    
-    This should list out the database schemas:
-
-    ```
-    +-------------------------+
-    | Database                |
-    +-------------------------+
-    | hspc_8_MasterDstu2Empty |
-    | hspc_8_MasterDstu2Smart |
-    | hspc_8_MasterR4Empty    |
-    | hspc_8_MasterR4Smart    |
-    | hspc_8_MasterStu3Empty  |
-    | hspc_8_MasterStu3Smart  |
-    | hspc_8_hspc10           |
-    | hspc_8_hspc8            |
-    | hspc_8_hspc9            |
-    | oic                     |
-    | sandman                 |
-    | sys                     |
-    +-------------------------+
-    ```
-
-    Make sure the schemas listed above show up. All the required schemas may not immediately show, and you would need to wait and run the command again till all the required schemas are listed. There may be additional schemas listed, but that is not an issue.
-    Exit the bash prompt of the MySQL container by running the following command
-
-   ```sh
-    exit
-   ```
 ### Starting the sandbox
 In the same terminal window or another terminal window run the following:
    ```sh
@@ -137,19 +97,20 @@ To check if things are running open another terminal window and run:
 	
 You should see output like this showing the running instances and the ports they are listening on. All the states should say “Up”:
 ```
-                        Name                                       Command               State                         Ports                      
---------------------------------------------------------------------------------------------------------------------------------------------------
-communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp, 33060/tcp                
-sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8086->8086/tcp                           
-sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8078->8078/tcp                           
-sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Up      0.0.0.0:8080->8080/tcp, 8443/tcp                 
-sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8096->8096/tcp                           
-sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8070->8070/tcp                           
-sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Up      0.0.0.0:8060->8060/tcp                           
-sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:12000->12000/tcp                         
-sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Up      1935/tcp, 0.0.0.0:3001->3000/tcp, 443/tcp, 80/tcp
-sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Up      0.0.0.0:8090->80/tcp                             
-sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8079->8079/tcp    
+                        Name                                       Command                  State                             Ports                      
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Up (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp                
+sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Up             0.0.0.0:8086->8086/tcp                           
+sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8078->8078/tcp                           
+sandbox-community-edition_ehr-simulator_1               serve -s -p 3000 build           Up             0.0.0.0:3000->3000/tcp                           
+sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Up             0.0.0.0:8080->8080/tcp, 8443/tcp                 
+sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Up             0.0.0.0:8096->8096/tcp                           
+sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8070->8070/tcp                           
+sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Up             0.0.0.0:8060->8060/tcp                           
+sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:12000->12000/tcp                         
+sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Up             1935/tcp, 0.0.0.0:3001->3000/tcp, 443/tcp, 80/tcp
+sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Up             0.0.0.0:8090->80/tcp                             
+sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8079->8079/tcp   
 ```
 
 In a web browser (preferably Chrome) go to http://localhost:3001. You should see a Keycloak login screen like the following. Click on register and fill in your details.
@@ -173,17 +134,20 @@ In another terminal window show the running services
    ```
 Run the `check-ports.sh` shell script to see the services listening on ports. If you get an error saying permission is denied, then run the command `chmod +x check-ports.sh`.
 ```
-com.docke   698 gopalmenon   84u  IPv6 0xc9b8f9c3369a097      0t0  TCP *:3001 (LISTEN)
-com.docke   698 gopalmenon   83u  IPv6 0xc9b8f9c227ec6f7      0t0  TCP *:3306 (LISTEN)
-com.docke   698 gopalmenon   90u  IPv6 0xc9b8f9c35f4d3b7      0t0  TCP *:8060 (LISTEN)
-com.docke   698 gopalmenon   92u  IPv6 0xc9b8f9c28be8d57      0t0  TCP *:8070 (LISTEN)
-com.docke   698 gopalmenon   91u  IPv6 0xc9b8f9c20d0dd57      0t0  TCP *:8078 (LISTEN)
-com.docke   698 gopalmenon   93u  IPv6 0xc9b8f9c35f4cd57      0t0  TCP *:8079 (LISTEN)
-com.docke   698 gopalmenon   87u  IPv6 0xc9b8f9c2c86ea17      0t0  TCP *:8080 (LISTEN)
-com.docke   698 gopalmenon   85u  IPv6 0xc9b8f9c3369b3b7      0t0  TCP *:8086 (LISTEN)
-com.docke   698 gopalmenon   88u  IPv6 0xc9b8f9c2c86d6f7      0t0  TCP *:8090 (LISTEN)
-com.docke   698 gopalmenon   86u  IPv6 0xc9b8f9c2c86e3b7      0t0  TCP *:8096 (LISTEN)
-com.docke   698 gopalmenon   89u  IPv6 0xc9b8f9c2c86d097      0t0  TCP *:12000 (LISTEN)
+com.docke   698 gopalmenon   83u  IPv6 0xc9b8f9c2c86d6f7      0t0  TCP *:3000 (LISTEN)
+node      12898 gopalmenon   27u  IPv4 0xc9b8f9c3f637af7      0t0  TCP *:3000 (LISTEN)
+com.docke   698 gopalmenon   84u  IPv6 0xc9b8f9c2c86ea17      0t0  TCP *:3001 (LISTEN)
+com.docke   698 gopalmenon   85u  IPv6 0xc9b8f9c28be8d57      0t0  TCP *:3306 (LISTEN)
+com.docke   698 gopalmenon   89u  IPv6 0xc9b8f9c4d1ae3b7      0t0  TCP *:8060 (LISTEN)
+com.docke   698 gopalmenon   91u  IPv6 0xc9b8f9c4d1add57      0t0  TCP *:8070 (LISTEN)
+com.docke   698 gopalmenon   88u  IPv6 0xc9b8f9c4d1ad6f7      0t0  TCP *:8078 (LISTEN)
+com.docke   698 gopalmenon   90u  IPv6 0xc9b8f9c4d1ad097      0t0  TCP *:8079 (LISTEN)
+com.docke   698 gopalmenon   87u  IPv6 0xc9b8f9c35f49a17      0t0  TCP *:8080 (LISTEN)
+com.docke   698 gopalmenon   54u  IPv6 0xc9b8f9c3b0283b7      0t0  TCP *:8086 (LISTEN)
+node      13020 gopalmenon   23u  IPv4 0xc9b8f9c3b09a0df      0t0  TCP *:8086 (LISTEN)
+com.docke   698 gopalmenon   86u  IPv6 0xc9b8f9c35f48097      0t0  TCP *:8090 (LISTEN)
+com.docke   698 gopalmenon   82u  IPv6 0xc9b8f9c227ec6f7      0t0  TCP *:8096 (LISTEN)
+com.docke   698 gopalmenon   92u  IPv6 0xc9b8f9c20d0dd57      0t0  TCP *:12000 (LISTEN)
 ```
 Use the following command to stop the services.
 ```sh
@@ -191,17 +155,18 @@ docker-compose stop
 ```
 You will see something like this as the containers are stopped:
 ```
-Stopping sandbox-community-edition_static-content_1            ... done
-Stopping sandbox-community-edition_patient-data-manager_1      ... done
-Stopping sandbox-community-edition_bilirubin-risk-chart_1      ... done
-Stopping sandbox-community-edition_keycloak_1                  ... done
-Stopping sandbox-community-edition_stu3_1                      ... done
-Stopping sandbox-community-edition_r4_1                        ... done
-Stopping sandbox-community-edition_dstu2_1                     ... done
-Stopping sandbox-community-edition_sandbox-manager-api_1       ... done
 Stopping sandbox-community-edition_reference-auth_1            ... done
+Stopping sandbox-community-edition_dstu2_1                     ... done
+Stopping sandbox-community-edition_r4_1                        ... done
+Stopping sandbox-community-edition_sandbox-manager-api_1       ... done
+Stopping sandbox-community-edition_stu3_1                      ... done
+Stopping sandbox-community-edition_keycloak_1                  ... done
 Stopping communityedition_sandbox-mysql                        ... done
+Stopping sandbox-community-edition_bilirubin-risk-chart_1      ... done
+Stopping sandbox-community-edition_ehr-simulator_1             ... done
+Stopping sandbox-community-edition_static-content_1            ... done
 Stopping sandbox-community-edition_sandbox-manager-prototype_1 ... done
+Stopping sandbox-community-edition_patient-data-manager_1      ... done
 ```
 
 If you run the `check-ports.sh` shell script… you will see no output once the containers are stopped.
@@ -213,6 +178,7 @@ Running `docker-compose ps` will show something like the following:
 communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Exit 0          
 sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Exit 0          
 sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Exit 137        
+sandbox-community-edition_ehr-simulator_1               serve -s -p 3000 build           Exit 0          
 sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Exit 0          
 sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Exit 0          
 sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Exit 137        
@@ -220,7 +186,7 @@ sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -D
 sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Exit 137        
 sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Exit 0          
 sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Exit 0          
-sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Exit 137  
+sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Exit 137    
 ```
 ## Linux Install
 Install docker desktop for your distribution of Linux. 
@@ -233,24 +199,6 @@ Install docker desktop for your distribution of Linux.
 	```sh
 	cd sandbox-community-edition
 	```
-3. Start the MySQL container 
-    ```sh
-    sudo docker-compose up -d sandbox-mysql
-    ```
-4. Run the following command to make sure that the MySQL container is up
-    ```sh
-    sudo docker-compose ps
-    ```
-    The service sandbox-mysql should be visible with status Up similar to what is shown below.
-    ```sh
-                        Name                                   Command                State                   Ports              
-    -----------------------------------------------------------------------------------------------------------------------------
-    communityedition_sandbox-mysql                  docker-entrypoint.sh mysqld      Up         0.0.0.0:3306->3306/tcp, 33060/tcp
-    ```
-5. Run the following command to bring down the database
-    ```sh
-    sudo docker-compose stop
-    ```
 6. Add the following rows to the file /etc/hosts using a text editor
     ```
     127.0.0.1  keycloak
@@ -276,21 +224,22 @@ Install docker desktop for your distribution of Linux.
     ```sh
     sudo docker-compose ps
     ```
-    You should see something similar to the screen print below showing that 11 processes are with status Up.
+    You should see something similar to the screen print below showing that 12 processes are with status Up.
     ```
-                            Name                                       Command               State                         Ports                      
-    --------------------------------------------------------------------------------------------------------------------------------------------------
-    communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp, 33060/tcp                
-    sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8086->8086/tcp                           
-    sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8078->8078/tcp                           
-    sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Up      0.0.0.0:8080->8080/tcp, 8443/tcp                 
-    sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Up      0.0.0.0:8096->8096/tcp                           
-    sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8070->8070/tcp                           
-    sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Up      0.0.0.0:8060->8060/tcp                           
-    sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:12000->12000/tcp                         
-    sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Up      1935/tcp, 0.0.0.0:3001->3000/tcp, 443/tcp, 80/tcp
-    sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Up      0.0.0.0:8090->80/tcp                             
-    sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up      0.0.0.0:8079->8079/tcp       
+                            Name                                       Command                  State                             Ports                      
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------
+    communityedition_sandbox-mysql                          docker-entrypoint.sh mysqld      Up (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp                
+    sandbox-community-edition_bilirubin-risk-chart_1        docker-entrypoint.sh npm r ...   Up             0.0.0.0:8086->8086/tcp                           
+    sandbox-community-edition_dstu2_1                       sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8078->8078/tcp                           
+    sandbox-community-edition_ehr-simulator_1               serve -s -p 3000 build           Up             0.0.0.0:3000->3000/tcp                           
+    sandbox-community-edition_keycloak_1                    /opt/jboss/tools/docker-en ...   Up             0.0.0.0:8080->8080/tcp, 8443/tcp                 
+    sandbox-community-edition_patient-data-manager_1        docker-entrypoint.sh npm r ...   Up             0.0.0.0:8096->8096/tcp                           
+    sandbox-community-edition_r4_1                          sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8070->8070/tcp                           
+    sandbox-community-edition_reference-auth_1              sh -c java $JAVA_OPTS -Dja ...   Up             0.0.0.0:8060->8060/tcp                           
+    sandbox-community-edition_sandbox-manager-api_1         sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:12000->12000/tcp                         
+    sandbox-community-edition_sandbox-manager-prototype_1   /sbin/entrypoint.sh /usr/s ...   Up             1935/tcp, 0.0.0.0:3001->3000/tcp, 443/tcp, 80/tcp
+    sandbox-community-edition_static-content_1              /docker-entrypoint.sh ngin ...   Up             0.0.0.0:8090->80/tcp                             
+    sandbox-community-edition_stu3_1                        sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8079->8079/tcp   
     ```
 9. Go to http://localhost:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
 10. To stop the sandbox
