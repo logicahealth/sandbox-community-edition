@@ -146,20 +146,18 @@ In another terminal window show the running services
    ```
 Run the `check-ports.sh` shell script to see the services listening on ports. If you get an error saying permission is denied, then run the command `chmod +x check-ports.sh`.
 ```
-com.docke   698 gopalmenon   83u  IPv6 0xc9b8f9c2c86d6f7      0t0  TCP *:3000 (LISTEN)
-node      12898 gopalmenon   27u  IPv4 0xc9b8f9c3f637af7      0t0  TCP *:3000 (LISTEN)
-com.docke   698 gopalmenon   84u  IPv6 0xc9b8f9c2c86ea17      0t0  TCP *:3001 (LISTEN)
-com.docke   698 gopalmenon   85u  IPv6 0xc9b8f9c28be8d57      0t0  TCP *:3306 (LISTEN)
-com.docke   698 gopalmenon   89u  IPv6 0xc9b8f9c4d1ae3b7      0t0  TCP *:8060 (LISTEN)
-com.docke   698 gopalmenon   91u  IPv6 0xc9b8f9c4d1add57      0t0  TCP *:8070 (LISTEN)
-com.docke   698 gopalmenon   88u  IPv6 0xc9b8f9c4d1ad6f7      0t0  TCP *:8078 (LISTEN)
-com.docke   698 gopalmenon   90u  IPv6 0xc9b8f9c4d1ad097      0t0  TCP *:8079 (LISTEN)
-com.docke   698 gopalmenon   87u  IPv6 0xc9b8f9c35f49a17      0t0  TCP *:8080 (LISTEN)
-com.docke   698 gopalmenon   54u  IPv6 0xc9b8f9c3b0283b7      0t0  TCP *:8086 (LISTEN)
-node      13020 gopalmenon   23u  IPv4 0xc9b8f9c3b09a0df      0t0  TCP *:8086 (LISTEN)
-com.docke   698 gopalmenon   86u  IPv6 0xc9b8f9c35f48097      0t0  TCP *:8090 (LISTEN)
-com.docke   698 gopalmenon   82u  IPv6 0xc9b8f9c227ec6f7      0t0  TCP *:8096 (LISTEN)
-com.docke   698 gopalmenon   92u  IPv6 0xc9b8f9c20d0dd57      0t0  TCP *:12000 (LISTEN)
+com.docke   698 gopalmenon   84u  IPv6 0xc9b8f9c29c866f7      0t0  TCP *:3000 (LISTEN)
+com.docke   698 gopalmenon   85u  IPv6 0xc9b8f9c2c86d6f7      0t0  TCP *:3001 (LISTEN)
+com.docke   698 gopalmenon   83u  IPv6 0xc9b8f9c29c87a17      0t0  TCP *:3306 (LISTEN)
+com.docke   698 gopalmenon   92u  IPv6 0xc9b8f9c5019ca17      0t0  TCP *:8060 (LISTEN)
+com.docke   698 gopalmenon   91u  IPv6 0xc9b8f9c35f48d57      0t0  TCP *:8070 (LISTEN)
+com.docke   698 gopalmenon   93u  IPv6 0xc9b8f9c5019bd57      0t0  TCP *:8078 (LISTEN)
+com.docke   698 gopalmenon   90u  IPv6 0xc9b8f9c35f48097      0t0  TCP *:8079 (LISTEN)
+com.docke   698 gopalmenon   86u  IPv6 0xc9b8f9c2c86e3b7      0t0  TCP *:8080 (LISTEN)
+com.docke   698 gopalmenon   87u  IPv6 0xc9b8f9c268fdd57      0t0  TCP *:8086 (LISTEN)
+com.docke   698 gopalmenon   88u  IPv6 0xc9b8f9c268fd6f7      0t0  TCP *:8090 (LISTEN)
+com.docke   698 gopalmenon   89u  IPv6 0xc9b8f9c3b028a17      0t0  TCP *:8096 (LISTEN)
+com.docke   698 gopalmenon   94u  IPv6 0xc9b8f9c3b027d57      0t0  TCP *:12000 (LISTEN)
 ```
 Use the following command to stop the services.
 ```sh
