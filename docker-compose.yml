@@ -18,7 +18,7 @@ services:
     command: ["-Djboss.http.port=8080", "-Dkeycloak.profile.feature.upload_scripts=enabled"]
 
   sandbox-mysql:
-    image: gopalinteropion/sandbox-mysql
+    image: logicahealth/sandbox-mysql
     ports:
       - "3306:3306"
     volumes:
@@ -34,7 +34,7 @@ services:
       retries: 20
 
   sandbox-manager-api:
-    image: gopalinteropion/sandbox-manager-api
+    image: logicahealth/sandbox-manager-api
     ports:
       - "12000:12000"
     environment:
@@ -53,7 +53,7 @@ services:
         condition: service_healthy
 
   reference-auth:
-    image: gopalinteropion/auth
+    image: logicahealth/auth
     ports:
       - "8060:8060"
     environment:
@@ -85,12 +85,12 @@ services:
         condition: service_healthy
 
   sandbox-manager-prototype:
-    image: gopalinteropion/sandbox-manager-prototype
+    image: logicahealth/sandbox-manager-prototype
     ports:
       - "3001:3000"
 
   dstu2:
-    image: hspconsortium/api:2.9.0
+    image: logicahealth/api
     ports:
       - "8078:8078"
     environment:
@@ -111,7 +111,7 @@ services:
         condition: service_healthy
 
   stu3:
-    image: hspconsortium/api:2.9.0
+    image: logicahealth/api
     ports:
       - "8079:8079"
     environment:
@@ -132,7 +132,7 @@ services:
         condition: service_healthy
 
   r4:
-    image: hspconsortium/api:2.9.0
+    image: logicahealth/api
     ports:
       - "8070:8070"
     environment:
@@ -153,22 +153,22 @@ services:
         condition: service_healthy
 
   static-content:
-    image: gopalinteropion/sandbox-ce-static-content
+    image: logicahealth/sandbox-ce-static-content
     ports:
       - "8090:80"
 
   bilirubin-risk-chart:
-    image: gopalinteropion/bilirubin-risk-chart-app
+    image: logicahealth/bilirubin-risk-chart-app
     ports:
       - "8086:8086"
 
   patient-data-manager:
-    image: gopalinteropion/patient-data-manager
+    image: logicahealth/patient-data-manager
     ports:
       - "8096:8096"
 
   ehr-simulator:
-    image: hspconsortium/ehr-app:0.6.13
+    image: logicahealth/ehr-app
     ports:
       - "3000:3000"
 
