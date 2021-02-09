@@ -4,7 +4,7 @@ Repository for the free community edition of the sandbox
 ## Introduction
 This document outlines downloading and installing the Logica Sandbox Community Edition and getting it running. It is broken into four sections. An  *Overview* section detailing the prerequisites to getting the system running as well as three installation sections… one each for *MacOS*, *Linux*, and *Windows* installations. Versions of the operating systems used and tested and the versions of any tools will be explicitly stated where appropriate. We recognize tools change over time and the content of this document may be out-of-date by the time you read this. We hope to give you enough information to adjust to new versions as needed. Some of the information in this document may seem remedial but we are including it anyway for those who may not be as familiar with the command line and other tools involved in the setup.
 
-*NOTE:* The community edition is currently using HAPI 4.2.0. The Enterprise edition currently running online will soon be at HAPI 5.2.0. 
+*NOTE:* The community edition is currently using HAPI 4.2.0. The Enterprise edition currently running online is at HAPI 5.2.0. 
 
 **WARNING:** Follow these instructions VERY carefully. If you miss a step… you will likely get pages and pages of errors.
 
@@ -100,7 +100,7 @@ This will start the services for the sandbox. At first, you will see something l
     Creating sandbox-community-edition_sandbox-manager-prototype_1 ... done
     Creating sandbox-community-edition_ehr-simulator_1             ... done
    ```
-The output will stay unchanged while the database is being seeded. After the database seeding is completed, you will see other services that depend on the database start up. Images for the containers will be downloaded from docker hub. This process may take a while the first time and produce a lot of logging output.
+The output will stay unchanged while the database is being seeded. After the database seeding is completed, you will see other services that depend on the database start up. Images for the containers will be downloaded from docker hub. This process may take a while the first time and produce a lot of logging output. Wait until the logging output stops.
 
 To check if things are running open another terminal window and run:
    ```sh
@@ -132,7 +132,7 @@ You will be able to use this username and password to login to the sandbox from 
 *NOTE:* If you ever lose or forget this password, look in the appendices to find out how to reset it.
 After logging in, you should see the following screen with no sandboxes. Click the NEW SANDBOX button to create a sandbox.
 
-After you have created a sandbox you will see them listed:
+After you have created a sandbox you will see it listed:
 ![First Login](./images/first_login.png)
 
 ### Starting and stopping the sandbox
