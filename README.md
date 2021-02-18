@@ -233,19 +233,19 @@ Install docker desktop for your distribution of Linux.
     ```
     You should see something similar to the screen print below showing that 11 processes are with status Up.
     ```
-                      Name                                    Command                  State                                       Ports                                 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-sandbox-community-edition_bilirubin-risk-chart_1   docker-entrypoint.sh npm r ...   Up             0.0.0.0:8086->8086/tcp                                                
-sandbox-community-edition_dstu2_1                  sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8078->8078/tcp                                                
-sandbox-community-edition_keycloak_1               /opt/jboss/tools/docker-en ...   Up             0.0.0.0:8080->8080/tcp, 8443/tcp                                      
-sandbox-community-edition_patient-data-manager_1   docker-entrypoint.sh npm r ...   Up             0.0.0.0:8096->8096/tcp                                                
-sandbox-community-edition_r4_1                     sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8070->8070/tcp                                                
-sandbox-community-edition_r5_1                     sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8071->8071/tcp                                                
-sandbox-community-edition_sandbox-manager-api_1    sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:12000->12000/tcp                                              
-sandbox-community-edition_sandbox-mysql_1          docker-entrypoint.sh mysqld      Up (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp                                     
-sandbox-community-edition_sandbox_1                /bin/sh -c sh start.sh           Up             0.0.0.0:3000->3000/tcp, 0.0.0.0:3001->3001/tcp, 0.0.0.0:8060->8060/tcp
-sandbox-community-edition_static-content_1         /docker-entrypoint.sh ngin ...   Up             0.0.0.0:8090->80/tcp                                                  
-sandbox-community-edition_stu3_1                   sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8079->8079/tcp  
+                          Name                                    Command                  State                                       Ports                                 
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_bilirubin-risk-chart_1   docker-entrypoint.sh npm r ...   Up             0.0.0.0:8086->8086/tcp                                                
+    sandbox-community-edition_dstu2_1                  sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8078->8078/tcp                                                
+    sandbox-community-edition_keycloak_1               /opt/jboss/tools/docker-en ...   Up             0.0.0.0:8080->8080/tcp, 8443/tcp                                      
+    sandbox-community-edition_patient-data-manager_1   docker-entrypoint.sh npm r ...   Up             0.0.0.0:8096->8096/tcp                                                
+    sandbox-community-edition_r4_1                     sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8070->8070/tcp                                                
+    sandbox-community-edition_r5_1                     sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8071->8071/tcp                                                
+    sandbox-community-edition_sandbox-manager-api_1    sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:12000->12000/tcp                                              
+    sandbox-community-edition_sandbox-mysql_1          docker-entrypoint.sh mysqld      Up (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp                                     
+    sandbox-community-edition_sandbox_1                /bin/sh -c sh start.sh           Up             0.0.0.0:3000->3000/tcp, 0.0.0.0:3001->3001/tcp, 0.0.0.0:8060->8060/tcp
+    sandbox-community-edition_static-content_1         /docker-entrypoint.sh ngin ...   Up             0.0.0.0:8090->80/tcp                                                  
+    sandbox-community-edition_stu3_1                   sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8079->8079/tcp  
     ```
 9. Go to http://sandbox:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
 10. To stop the sandbox
