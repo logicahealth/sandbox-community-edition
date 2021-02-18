@@ -702,19 +702,19 @@
       "id": "b0aa1970-e558-4014-8f56-9086d2a6cebd",
       "clientId": "reference-auth",
       "rootUrl": "",
-      "adminUrl": "http://reference-auth:8060/*",
-      "baseUrl": "http://reference-auth:8060/authorize",
+      "adminUrl": "http://sandbox:8060/*",
+      "baseUrl": "http://sandbox:8060/authorize",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "593ada9c-b1dc-444f-a2e6-30cc4add8146",
       "redirectUris": [
-        "http://reference-auth:8060/*",
+        "http://sandbox:8060/*",
         "http://localhost:3001/*"
       ],
       "webOrigins": [
-        "http://reference-auth:8060/"
+        "http://sandbox:8060/"
       ],
       "notBefore": 0,
       "bearerOnly": false,
