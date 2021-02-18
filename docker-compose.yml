@@ -26,7 +26,6 @@ services:
     environment:
       - MYSQL_PASSWORD=password
       - MYSQL_ROOT_PASSWORD=password
-    container_name: communityedition_sandbox-mysql
     healthcheck:
       test: ["CMD-SHELL", "/wait-for-db.sh"]
       interval: 2s
@@ -48,6 +47,7 @@ services:
       - API_DSTU2_HOST=dstu2
       - API_STU3_HOST=stu3
       - API_R4_HOST=r4
+      - API_R5_HOST=r5
     depends_on:
       sandbox-mysql:
         condition: service_healthy
@@ -150,6 +150,27 @@ services:
       sandbox-mysql:
         condition: service_healthy
 
+  r5:
+    image: logicahealth/api
+    ports:
+      - "8071:8071"
+    environment:
+      - SPRING_PROFILES_ACTIVE=r5,multitenant
+      - API_PORT=8071
+      - SANDBOX_NAME=hspc11
+      - SBMA_HOST=sandbox-manager-api
+      - SBMA_PORT=12000
+      - DB_HOST=sandbox-mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - AUTH_HOST=sandbox
+      - AUTH_PORT=8060
+      - MANIFEST_OVERRIDE=false
+    depends_on:
+      sandbox-mysql:
+        condition: service_healthy
+
   static-content:
     image: logicahealth/sandbox-ce-static-content
     ports:
@@ -164,4 +185,3 @@ services:
     image: logicahealth/patient-data-manager
     ports:
       - "8096:8096"
-
