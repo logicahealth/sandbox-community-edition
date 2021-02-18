@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `hspc_8_hspc8` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `hspc_8_hspc8`;
 -- MySQL dump 10.13  Distrib 8.0.21, for macos10.15 (x86_64)
 --
 -- Host: sandboxdb.logicahealth.org    Database: hspc_8_hspc8
