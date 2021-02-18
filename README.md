@@ -27,6 +27,7 @@ The sandbox makes use of the following TCP ports and may conflict with services 
 * 3306 - MySQL 5.7 database server
 * 8060 - OAuth server
 * 8070 - FHIR R4 server
+* 8071 - FHIR R5 server
 * 8078 - FHIR DSTU2 server
 * 8079 - FHIR STU3 server
 * 8080 - Keycloak authentication server
