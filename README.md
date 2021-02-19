@@ -85,7 +85,7 @@ Now instances will get the memory they require to run correctly. If you are runn
     cd sandbox-community-edition
     ```
 ### Starting the sandbox
-In the same terminal window or another terminal window run the following:
+Make sure there are no port conflicts by running check-ports.sh. In the same terminal window or another terminal window run the following:
    ```sh
     docker-compose up
    ```
