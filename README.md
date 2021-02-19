@@ -206,7 +206,7 @@ Install docker desktop for your distribution of Linux.
 	```sh
 	cd sandbox-community-edition
 	```
-6. Add the following rows to the file /etc/hosts using a text editor
+3. Add the following rows to the file /etc/hosts using a text editor
     ```
     127.0.0.1  keycloak
     127.0.0.1  sandbox-mysql
@@ -224,16 +224,38 @@ Install docker desktop for your distribution of Linux.
     ```sh
     sudo nano /etc/hosts
     ```
-7. Now start the sandbox using the command
+4. Start the database seeding by running the following command
     ```sh
-    docker-compose up
+    sudo docker-compose up -d sandbox-mysql
     ```
-8. Run the following command to see a list of docker processes that are running.
+5. Run the following command to see a list of docker processes that are running.
     ```sh
     sudo docker-compose ps
     ```
-    You should see something similar to the screen print below showing that 11 processes are with status Up.
+    You should see something similar to the screen print below showing the database starting up.
+   ```
+                          Name                              Command             State                                    Ports
+    -----------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_sandbox-mysql_1   docker-entrypoint.sh mysqld   Up (health: starting)   0.0.0.0:3306->3306/tcp, 33060/tcp
+    ``` 
+    Run the command to see the status of the process. Before changing state to healthy, the process status will be as shown below.
     ```
+                          Name                              Command             State                                    Ports
+    -----------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_sandbox-mysql_1   docker-entrypoint.sh mysqld   Up (unhealthy)   0.0.0.0:3306->3306/tcp, 33060/tcp
+    ```
+   Wait till the process shows up as healthy as shown below. You will need to check by running the command to list out the docker processes.
+    ```
+                          Name                              Command             State                                    Ports
+    -----------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_sandbox-mysql_1   docker-entrypoint.sh mysqld   Up (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp
+    ```
+6. Run the following command to bring up the rest of the processes for the sandbox.
+   ```
+   sudo docker-compose up
+   ```   
+7. List out the processes and you should see something like the following.   
+   ```
                           Name                                    Command                  State                                       Ports                                 
     -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     sandbox-community-edition_bilirubin-risk-chart_1   docker-entrypoint.sh npm r ...   Up             0.0.0.0:8086->8086/tcp                                                
@@ -248,12 +270,20 @@ Install docker desktop for your distribution of Linux.
     sandbox-community-edition_static-content_1         /docker-entrypoint.sh ngin ...   Up             0.0.0.0:8090->80/tcp                                                  
     sandbox-community-edition_stu3_1                   sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8079->8079/tcp  
     ```
-9. Go to http://sandbox:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
-10. To stop the sandbox
+8. Go to http://sandbox:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
+9. To stop the sandbox
     ```sh
     sudo docker-compose stop
     ```
-
+## Running the sandbox on Linux
+1. After the install, run the following command to start the sandbox
+    ```
+    sudo docker-compose up
+    ```
+2. Run this to stop the sandbox
+    ```
+    sudo docker-compose stop    
+    ```
 ## Windows Install
 *TODO*
 
