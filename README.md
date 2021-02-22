@@ -10,7 +10,7 @@ The community edition is currently at HAPI 5.2.0.
 
 ## Overview
 Running the sandbox locally on any OS requires the following:
-* Docker (tested with Docker Desktop v3.0.4)
+* Docker 
 * MySQL container 
 * Keycloak server container
 * Sandbox containers
@@ -74,6 +74,8 @@ Run the Docker Desktop app and set the memory allocation requirements by clickin
 Set Memory to a minimum of 8.00 GB:
 ![Docker Memory](./images/docker_memory.png)
 Now instances will get the memory they require to run correctly. If you are running into memory issues with the containers this is most likely the culprit.
+
+The community edition was tested on Docker Desktop v3.1.0 and docker compose version 1.27.4. The docker version may be checked using the About menu option. The docker compose version may be checked using the command ```docker-compose -v```.
 
 ### Download and Install
 1. Clone this project 
@@ -196,7 +198,7 @@ sandbox-community-edition_static-content_1         /docker-entrypoint.sh ngin ..
 sandbox-community-edition_stu3_1                   sh -c java $JAVA_OPTS -jar ...   Exit 137   
 ```
 ## Linux Install
-Install docker desktop for your distribution of Linux. 
+Install Docker for your distribution of Linux. The community edition was tested on docker compose version 1.26.0. The docker compose version may be checked using the command ```docker-compose -v```.
 
 1. Clone this project 
 	```sh
@@ -244,7 +246,7 @@ Install docker desktop for your distribution of Linux.
     -----------------------------------------------------------------------------------------------------------------------------------
     sandbox-community-edition_sandbox-mysql_1   docker-entrypoint.sh mysqld   Up (unhealthy)   0.0.0.0:3306->3306/tcp, 33060/tcp
     ```
-   Wait till the process shows up as healthy as shown below. You will need to check by running the command to list out the docker processes.
+   Wait until the process shows up as healthy as shown below. You will need to check by running the command to list out the docker processes.
     ```
                           Name                              Command             State                                    Ports
     -----------------------------------------------------------------------------------------------------------------------------------
