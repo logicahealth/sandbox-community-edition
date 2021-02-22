@@ -10,6 +10,7 @@ The community edition is currently at HAPI 5.2.0.
 
 ## Overview
 Running the sandbox locally on any OS requires the following:
+* git
 * Docker 
 * MySQL container 
 * Keycloak server container
