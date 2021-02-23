@@ -278,7 +278,7 @@ Install Docker for your distribution of Linux. The community edition was tested 
     ```sh
     sudo docker-compose stop
     ```
-## Running the sandbox on Linux
+### Running the sandbox on Linux
 1. After the install, run the following command to start the sandbox
     ```
     sudo docker-compose up
@@ -288,7 +288,104 @@ Install Docker for your distribution of Linux. The community edition was tested 
     sudo docker-compose stop    
     ```
 ## Windows Install
-*TODO*
+
+Windows Install (tested under Windows 10):
+
+### Install Docker Desktop from the Docker website:
+
+Browse to: https://www.docker.com/products/docker-desktop
+Download and run the installer
+
+The community edition was tested on Docker Desktop v3.1.0 and docker compose version 1.27.4. The docker version may be checked using the About menu option. The docker compose version may be checked using the command ```docker-compose -v```.
+
+### Download and Install
+
+The command line instructions below should be executed in a console with administrative privileges ("Run as Administrator").
+
+1. Clone this project 
+	```
+	git clone https://github.com/logicahealth/sandbox-community-edition.git
+	```
+2. Change to the new directory
+	```
+	cd sandbox-community-edition
+	```
+3. Add the following rows to the file `C:\Windows\System32\drivers\etc\hosts` using a text editor with administrative priviles
+    ```
+    127.0.0.1  keycloak
+    127.0.0.1  sandbox-mysql
+    127.0.0.1  sandbox-manager-api
+    127.0.0.1  sandbox
+    127.0.0.1  dstu2
+    127.0.0.1  stu3
+    127.0.0.1  r4
+    127.0.0.1  r5
+    127.0.0.1  static-content
+    ```
+
+    *Note:* Restart Docker Desktop after saving the changes above to make sure that it picks up the host substitutions.
+4. Start the database seeding by running the following command
+    ```
+    docker-compose up -d sandbox-mysql
+    ```
+5. Run the following command to see a list of docker processes that are running.
+    ```
+    docker-compose ps
+    ```
+    You should see something similar to the screen print below showing the database starting up.
+   ```
+                          Name                              Command             State                                    Ports
+    -----------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_sandbox-mysql_1   docker-entrypoint.sh mysqld   Up (health: starting)   0.0.0.0:3306->3306/tcp, 33060/tcp
+    ``` 
+    Run the command to see the status of the process. Before changing state to healthy, the process status will be as shown below.
+    ```
+                          Name                              Command             State                                    Ports
+    -----------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_sandbox-mysql_1   docker-entrypoint.sh mysqld   Up (unhealthy)   0.0.0.0:3306->3306/tcp, 33060/tcp
+    ```
+   Wait until the process shows up as healthy as shown below. You will need to check by running the command to list out the docker processes.
+    ```
+                          Name                              Command             State                                    Ports
+    -----------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_sandbox-mysql_1   docker-entrypoint.sh mysqld   Up (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp
+    ```
+6. Run the following command to bring up the rest of the processes for the sandbox.
+   ```
+   docker-compose up
+   ``` 
+
+   *Note:* Wait a couple minutes for the containers to stabilize before proceeding (when they stop producing startup output in the cosole log)
+7. List out the processes and you should see something like the following.   
+   ```
+                          Name                                    Command                  State                                       Ports                                 
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    sandbox-community-edition_bilirubin-risk-chart_1   docker-entrypoint.sh npm r ...   Up             0.0.0.0:8086->8086/tcp                                                
+    sandbox-community-edition_dstu2_1                  sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8078->8078/tcp                                                
+    sandbox-community-edition_keycloak_1               /opt/jboss/tools/docker-en ...   Up             0.0.0.0:8080->8080/tcp, 8443/tcp                                      
+    sandbox-community-edition_patient-data-manager_1   docker-entrypoint.sh npm r ...   Up             0.0.0.0:8096->8096/tcp                                                
+    sandbox-community-edition_r4_1                     sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8070->8070/tcp                                                
+    sandbox-community-edition_r5_1                     sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8071->8071/tcp                                                
+    sandbox-community-edition_sandbox-manager-api_1    sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:12000->12000/tcp                                              
+    sandbox-community-edition_sandbox-mysql_1          docker-entrypoint.sh mysqld      Up (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp                                     
+    sandbox-community-edition_sandbox_1                /bin/sh -c sh start.sh           Up             0.0.0.0:3000->3000/tcp, 0.0.0.0:3001->3001/tcp, 0.0.0.0:8060->8060/tcp
+    sandbox-community-edition_static-content_1         /docker-entrypoint.sh ngin ...   Up             0.0.0.0:8090->80/tcp                                                  
+    sandbox-community-edition_stu3_1                   sh -c java $JAVA_OPTS -jar ...   Up             0.0.0.0:8079->8079/tcp  
+    ```
+8. Go to http://sandbox:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
+9. To stop the sandbox
+    ```
+    docker-compose stop
+    ```
+### Running the sandbox on Windows
+1. After the install, run the following command to start the sandbox
+    ```
+    docker-compose up
+    ```
+2. Run this to stop the sandbox
+    ```
+    docker-compose stop    
+    ```
 
 ## FAQ
 ### Something is listening on a port, and I don’t know how to kill it
