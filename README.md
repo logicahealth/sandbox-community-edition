@@ -296,7 +296,7 @@ Install Docker for your distribution of Linux. The community edition was tested 
 
 ### Lost or forgotten password 
 
-If you do not remember your username or password, you will need to go to the Keycloak server and login as an administrator. Go to http://localhost:8080 on a browser and you will see the following screen.
+If you do not remember your username or password, you will need to go to the Keycloak server and login as an administrator. Go to http://keycloak:8080 on a browser and you will see the following screen.
 ![Keycloak Console](./images/keycloak_console.png)
 
 Click on Administration Console and login with user `admin` and password `admin`. 
@@ -311,7 +311,7 @@ To reset your password, go to the Credentials tab.
 ![Keycloak User Credentials](./images/keycloak_user_credentials.png)
 Key in your new preferred password into Password and Password Confirmation. Toggle the Temporary setting to OFF. Click on Reset Password and press Reset password on the confirmation screen that pops up asking if you are sure. Now you can logoff as Keycloak administrator by clicking on the Admin drop down on the top right.
 
-Go http://localhost:3001 and login with your new password.
+Go http://sandbox:3001 and login with your new password.
 
 
 ### Containers won’t start up
