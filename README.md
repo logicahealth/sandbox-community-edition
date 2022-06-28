@@ -76,7 +76,7 @@ Set Memory to a minimum of 8.00 GB:
 ![Docker Memory](./images/docker_memory.png)
 Now instances will get the memory they require to run correctly. If you are running into memory issues with the containers this is most likely the culprit.
 
-The community edition was tested on Docker Desktop v3.1.0 and docker compose version 1.27.4. The docker version may be checked using the About menu option. The docker compose version may be checked using the command ```docker-compose -v```.
+The community edition was tested on Docker Desktop v3.1.0 and docker compose version 1.27.4. The docker version may be checked using the About menu option. The docker compose version may be checked using the command ```docker compose -v```.
 
 ### Download and Install
 1. Clone this project 
@@ -90,7 +90,7 @@ The community edition was tested on Docker Desktop v3.1.0 and docker compose ver
 ### Starting the sandbox
 Make sure there are no port conflicts by running check-ports.sh. In the same terminal window or another terminal window run the following:
    ```sh
-    docker-compose up
+    docker compose up
    ```
 	
 This will start the services for the sandbox. At first, you will see something like the following
@@ -107,7 +107,7 @@ The output will stay unchanged while the database is being seeded. After the dat
 
 To check if things are running open another terminal window and run:
    ```sh
-    docker-compose ps
+    docker compose ps
    ```
 	
 You should see output like this showing the running instances and the ports they are listening on. All the states should say “Up”:
@@ -140,11 +140,11 @@ After you have created a sandbox you will see it listed:
 ### Starting and stopping the sandbox
 To start the services
    ```sh
-    docker-compose up
+    docker compose up
    ```
 In another terminal window show the running services
    ```sh
-    docker-compose ps
+    docker compose ps
    ```
 Run the `check-ports.sh` shell script to see the services listening on ports. If you get an error saying permission is denied, then run the command `chmod +x check-ports.sh`.
 ```
@@ -163,7 +163,7 @@ com.docke  811 gopalmenon   90u  IPv6 0xf1b6ae3608c45de7      0t0  TCP *:12000 (
 ```
 Use the following command to stop the services.
 ```sh
-docker-compose stop
+docker compose stop
 ```
 You will see something like this as the containers are stopped:
 ```
@@ -182,7 +182,7 @@ Stopping sandbox-community-edition_sandbox-mysql_1        ... done
 
 If you run the `check-ports.sh` shell script… you will see no output once the containers are stopped.
 
-Running `docker-compose ps` will show something like the following:
+Running `docker compose ps` will show something like the following:
 ```
                       Name                                    Command                State     Ports
 ----------------------------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ sandbox-community-edition_static-content_1         /docker-entrypoint.sh ngin ..
 sandbox-community-edition_stu3_1                   sh -c java $JAVA_OPTS -jar ...   Exit 137   
 ```
 ## Linux Install
-Install Docker for your distribution of Linux. The community edition was tested on docker compose version 1.26.0. The docker compose version may be checked using the command ```docker-compose -v```.
+Install Docker for your distribution of Linux. The community edition was tested on docker compose version 1.26.0. The docker compose version may be checked using the command ```docker compose -v```.
 
 1. Clone this project 
 	```sh
@@ -229,11 +229,11 @@ Install Docker for your distribution of Linux. The community edition was tested 
     ```
 4. Start the database seeding by running the following command
     ```sh
-    sudo docker-compose up -d sandbox-mysql
+    sudo docker compose up -d sandbox-mysql
     ```
 5. Run the following command to see a list of docker processes that are running.
     ```sh
-    sudo docker-compose ps
+    sudo docker compose ps
     ```
     You should see something similar to the screen print below showing the database starting up.
    ```
@@ -255,7 +255,7 @@ Install Docker for your distribution of Linux. The community edition was tested 
     ```
 6. Run the following command to bring up the rest of the processes for the sandbox.
    ```
-   sudo docker-compose up
+   sudo docker compose up
    ```   
 7. List out the processes and you should see something like the following.   
    ```
@@ -276,16 +276,16 @@ Install Docker for your distribution of Linux. The community edition was tested 
 8. Go to http://sandbox:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
 9. To stop the sandbox
     ```sh
-    sudo docker-compose stop
+    sudo docker compose stop
     ```
 ### Running the sandbox on Linux
 1. After the install, run the following command to start the sandbox
     ```
-    sudo docker-compose up
+    sudo docker compose up
     ```
 2. Run this to stop the sandbox
     ```
-    sudo docker-compose stop    
+    sudo docker compose stop    
     ```
 ## Windows Install
 
@@ -296,7 +296,7 @@ Windows Install (tested under Windows 10):
 Browse to: https://www.docker.com/products/docker-desktop
 Download and run the installer
 
-The community edition was tested on Docker Desktop v3.1.0 and docker compose version 1.27.4. The docker version may be checked using the About menu option. The docker compose version may be checked using the command ```docker-compose -v```.
+The community edition was tested on Docker Desktop v3.1.0 and docker compose version 1.27.4. The docker version may be checked using the About menu option. The docker compose version may be checked using the command ```docker compose -v```.
 
 ### Download and Install
 
@@ -326,11 +326,11 @@ The command line instructions below should be executed in a console with adminis
     *Note:* Restart Docker Desktop after saving the changes above to make sure that it picks up the host substitutions.
 4. Start the database seeding by running the following command
     ```
-    docker-compose up -d sandbox-mysql
+    docker compose up -d sandbox-mysql
     ```
 5. Run the following command to see a list of docker processes that are running.
     ```
-    docker-compose ps
+    docker compose ps
     ```
     You should see something similar to the screen print below showing the database starting up.
    ```
@@ -352,7 +352,7 @@ The command line instructions below should be executed in a console with adminis
     ```
 6. Run the following command to bring up the rest of the processes for the sandbox.
    ```
-   docker-compose up
+   docker compose up
    ``` 
 
    *Note:* Wait a couple minutes for the containers to stabilize before proceeding (when they stop producing startup output in the cosole log)
@@ -375,16 +375,16 @@ The command line instructions below should be executed in a console with adminis
 8. Go to http://sandbox:3001 on a browser to go to the sandbox. You will need to register the first time you are there. Save your user and password information.
 9. To stop the sandbox
     ```
-    docker-compose stop
+    docker compose stop
     ```
 ### Running the sandbox on Windows
 1. After the install, run the following command to start the sandbox
     ```
-    docker-compose up
+    docker compose up
     ```
 2. Run this to stop the sandbox
     ```
-    docker-compose stop    
+    docker compose stop    
     ```
 
 ## FAQ
