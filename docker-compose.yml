@@ -4,7 +4,6 @@ volumes:
   logica-sandbox-volume:
 
 services:
-
   keycloak:
     image: jboss/keycloak
     volumes:
@@ -15,7 +14,11 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - KEYCLOAK_IMPORT=/etc/security/realm_properties.json
-    command: ["-Djboss.http.port=8080", "-Dkeycloak.profile.feature.upload_scripts=enabled"]
+    command:
+      [
+        "-Djboss.http.port=8080",
+        "-Dkeycloak.profile.feature.upload_scripts=enabled",
+      ]
 
   sandbox-mysql:
     image: logicahealth/sandbox-mysql
@@ -53,7 +56,9 @@ services:
         condition: service_healthy
 
   sandbox:
-    image: logicahealth/sandbox:latest
+    build:
+      context: ../sandbox-manager-v3
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
       - "3001:3001"
