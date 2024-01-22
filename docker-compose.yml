@@ -1,12 +1,12 @@
-version: "2.3"
+version: "3"
 
 volumes:
   logica-sandbox-volume:
 
 services:
-
   keycloak:
-    image: jboss/keycloak
+    image: jboss/keycloak:latest
+
     volumes:
       - "./realm_properties.json:/etc/security/realm_properties.json"
     ports:
@@ -15,10 +15,14 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - KEYCLOAK_IMPORT=/etc/security/realm_properties.json
-    command: ["-Djboss.http.port=8080", "-Dkeycloak.profile.feature.upload_scripts=enabled"]
+    command:
+      [
+        "-Djboss.http.port=8080",
+        "-Dkeycloak.profile.feature.upload_scripts=enabled",
+      ]
 
   sandbox-mysql:
-    image: logicahealth/sandbox-mysql
+    image: logicahealth/sandbox-mysql:latest
     ports:
       - "3306:3306"
     volumes:
@@ -33,7 +37,7 @@ services:
       retries: 20
 
   sandbox-manager-api:
-    image: logicahealth/sandbox-manager-api
+    image: logicahealth/sandbox-manager-api:latest
     ports:
       - "12000:12000"
     environment:
@@ -44,13 +48,12 @@ services:
       - DB_PASSWORD=password
       - AUTH_HOST=sandbox
       - AUTH_PORT=8060
-      - API_DSTU2_HOST=dstu2
-      - API_STU3_HOST=stu3
+      # - API_DSTU2_HOST=dstu2
+      # - API_STU3_HOST=stu3
       - API_R4_HOST=r4
       - API_R5_HOST=r5
     depends_on:
-      sandbox-mysql:
-        condition: service_healthy
+    - sandbox-mysql
 
   sandbox:
     image: logicahealth/sandbox:latest
@@ -84,53 +87,52 @@ services:
       - KEYCLOAK_LOGOUT_SUCCESS_URL=http://keycloak:8080/auth/realms/Development/protocol/openid-connect/logout?redirect_uri=http://localhost:3001
       - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,address=5060,server=y,suspend=n"
     depends_on:
-      sandbox-mysql:
-        condition: service_healthy
+    - sandbox-mysql
 
-  dstu2:
-    image: logicahealth/api
-    ports:
-      - "8078:8078"
-    environment:
-      - SPRING_PROFILES_ACTIVE=dstu2,multitenant
-      - API_PORT=8078
-      - SANDBOX_NAME=hspc8
-      - SBMA_HOST=sandbox-manager-api
-      - SBMA_PORT=12000
-      - DB_HOST=sandbox-mysql
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASSWORD=password
-      - AUTH_HOST=sandbox
-      - AUTH_PORT=8060
-      - MANIFEST_OVERRIDE=false
-    depends_on:
-      sandbox-mysql:
-        condition: service_healthy
+  # dstu2:
+  #   image: logicahealth/api:latest
+  #   ports:
+  #     - "8078:8078"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=dstu2,multitenant
+  #     - API_PORT=8078
+  #     - SANDBOX_NAME=hspc8
+  #     - SBMA_HOST=sandbox-manager-api
+  #     - SBMA_PORT=12000
+  #     - DB_HOST=sandbox-mysql
+  #     - DB_PORT=3306
+  #     - DB_USER=root
+  #     - DB_PASSWORD=password
+  #     - AUTH_HOST=sandbox
+  #     - AUTH_PORT=8060
+  #     - MANIFEST_OVERRIDE=false
+  #   depends_on:
+  #     sandbox-mysql:
+  #       condition: service_healthy
 
-  stu3:
-    image: logicahealth/api
-    ports:
-      - "8079:8079"
-    environment:
-      - SPRING_PROFILES_ACTIVE=stu3,multitenant
-      - API_PORT=8079
-      - SANDBOX_NAME=hspc9
-      - SBMA_HOST=sandbox-manager-api
-      - SBMA_PORT=12000
-      - DB_HOST=sandbox-mysql
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASSWORD=password
-      - AUTH_HOST=sandbox
-      - AUTH_PORT=8060
-      - MANIFEST_OVERRIDE=false
-    depends_on:
-      sandbox-mysql:
-        condition: service_healthy
+  # stu3:
+  #   image: logicahealth/api:latest
+  #   ports:
+  #     - "8079:8079"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=stu3,multitenant
+  #     - API_PORT=8079
+  #     - SANDBOX_NAME=hspc9
+  #     - SBMA_HOST=sandbox-manager-api
+  #     - SBMA_PORT=12000
+  #     - DB_HOST=sandbox-mysql
+  #     - DB_PORT=3306
+  #     - DB_USER=root
+  #     - DB_PASSWORD=password
+  #     - AUTH_HOST=sandbox
+  #     - AUTH_PORT=8060
+  #     - MANIFEST_OVERRIDE=false
+  #   depends_on:
+  #     sandbox-mysql:
+  #       condition: service_healthy
 
   r4:
-    image: logicahealth/api
+    image: logicahealth/api:latest
     ports:
       - "8070:8070"
     environment:
@@ -147,11 +149,10 @@ services:
       - AUTH_PORT=8060
       - MANIFEST_OVERRIDE=false
     depends_on:
-      sandbox-mysql:
-        condition: service_healthy
+    - sandbox-mysql
 
   r5:
-    image: logicahealth/api
+    image: logicahealth/api:latest
     ports:
       - "8071:8071"
     environment:
@@ -168,20 +169,19 @@ services:
       - AUTH_PORT=8060
       - MANIFEST_OVERRIDE=false
     depends_on:
-      sandbox-mysql:
-        condition: service_healthy
+    - sandbox-mysql
 
   static-content:
-    image: logicahealth/sandbox-ce-static-content
+    image: logicahealth/sandbox-ce-static-content:latest
     ports:
       - "8090:80"
 
   bilirubin-risk-chart:
-    image: logicahealth/bilirubin-risk-chart-app
+    image: logicahealth/bilirubin-risk-chart-app:latest
     ports:
       - "8086:8086"
 
   patient-data-manager:
-    image: logicahealth/patient-data-manager
+    image: logicahealth/patient-data-manager:latest
     ports:
       - "8096:8096"
