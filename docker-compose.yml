@@ -4,6 +4,7 @@ volumes:
   logica-sandbox-volume:
 
 services:
+
   keycloak:
     image: jboss/keycloak:latest
 
@@ -32,9 +33,9 @@ services:
       - MYSQL_ROOT_PASSWORD=password
     healthcheck:
       test: ["CMD-SHELL", "/wait-for-db.sh"]
-      interval: 2s
-      timeout: 30s
-      retries: 20
+      interval: 10s
+      timeout: 60s
+      retries: 50
 
   sandbox-manager-api:
     image: logicahealth/sandbox-manager-api:latest
@@ -52,6 +53,7 @@ services:
       # - API_STU3_HOST=stu3
       - API_R4_HOST=r4
       - API_R5_HOST=r5
+    restart: unless-stopped
     depends_on:
     - sandbox-mysql
 
@@ -86,6 +88,7 @@ services:
       - KEYCLOAK_CREDENTIALS=593ada9c-b1dc-444f-a2e6-30cc4add8146
       - KEYCLOAK_LOGOUT_SUCCESS_URL=http://keycloak:8080/auth/realms/Development/protocol/openid-connect/logout?redirect_uri=http://localhost:3001
       - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,address=5060,server=y,suspend=n"
+    restart: unless-stopped
     depends_on:
     - sandbox-mysql
 
@@ -127,9 +130,9 @@ services:
   #     - AUTH_HOST=sandbox
   #     - AUTH_PORT=8060
   #     - MANIFEST_OVERRIDE=false
+  #   restart: unless-stopped
   #   depends_on:
-  #     sandbox-mysql:
-  #       condition: service_healthy
+  #   - sandbox-mysql
 
   r4:
     image: logicahealth/api:latest
@@ -148,6 +151,7 @@ services:
       - AUTH_HOST=sandbox
       - AUTH_PORT=8060
       - MANIFEST_OVERRIDE=false
+    restart: unless-stopped
     depends_on:
     - sandbox-mysql
 
@@ -168,6 +172,7 @@ services:
       - AUTH_HOST=sandbox
       - AUTH_PORT=8060
       - MANIFEST_OVERRIDE=false
+    restart: unless-stopped
     depends_on:
     - sandbox-mysql
 
