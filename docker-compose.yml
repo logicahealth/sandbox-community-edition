@@ -31,6 +31,7 @@ services:
     environment:
       - MYSQL_PASSWORD=password
       - MYSQL_ROOT_PASSWORD=password
+    command: ['mysqld', '--default-authentication-plugin=mysql_native_password']
     healthcheck:
       test: ["CMD-SHELL", "/wait-for-db.sh"]
       interval: 10s
