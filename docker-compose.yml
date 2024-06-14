@@ -114,26 +114,26 @@ services:
   #     sandbox-mysql:
   #       condition: service_healthy
 
-  # stu3:
-  #   image: logicahealth/api:latest
-  #   ports:
-  #     - "8079:8079"
-  #   environment:
-  #     - SPRING_PROFILES_ACTIVE=stu3,multitenant
-  #     - API_PORT=8079
-  #     - SANDBOX_NAME=hspc9
-  #     - SBMA_HOST=sandbox-manager-api
-  #     - SBMA_PORT=12000
-  #     - DB_HOST=sandbox-mysql
-  #     - DB_PORT=3306
-  #     - DB_USER=root
-  #     - DB_PASSWORD=password
-  #     - AUTH_HOST=sandbox
-  #     - AUTH_PORT=8060
-  #     - MANIFEST_OVERRIDE=false
-  #   restart: unless-stopped
-  #   depends_on:
-  #   - sandbox-mysql
+  stu3:
+    image: logicahealth/api:latest
+    ports:
+      - "8079:8079"
+    environment:
+      - SPRING_PROFILES_ACTIVE=stu3,multitenant
+      - API_PORT=8079
+      - SANDBOX_NAME=hspc9
+      - SBMA_HOST=sandbox-manager-api
+      - SBMA_PORT=12000
+      - DB_HOST=sandbox-mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - AUTH_HOST=sandbox
+      - AUTH_PORT=8060
+      - MANIFEST_OVERRIDE=false
+    restart: unless-stopped
+    depends_on:
+    - sandbox-mysql
 
   r4:
     image: logicahealth/api:latest
