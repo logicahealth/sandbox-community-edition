@@ -6,7 +6,7 @@ volumes:
 services:
 
   keycloak:
-    image: jboss/keycloak:latest
+    image: keycloak/keycloak:latest
 
     volumes:
       - "./realm_properties.json:/etc/security/realm_properties.json"
