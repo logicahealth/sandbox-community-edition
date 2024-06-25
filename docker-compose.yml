@@ -59,7 +59,10 @@ services:
     - sandbox-mysql
 
   sandbox:
+    # sandbox:latest is built on 3.4.7, not latest from sandbox-manager-v3 which is 3.4.9
     image: logicahealth/sandbox:latest
+    volumes:
+      - ../sandbox-manager-v3/projects/sandbox-manager/src/redux/action-creators/hooks.js:/projects/sandbox-manager/src/redux/action-creators/hooks.js
     ports:
       - "3000:3000"
       - "3001:3001"
