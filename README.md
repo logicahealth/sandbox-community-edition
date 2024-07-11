@@ -39,7 +39,7 @@ The sandbox makes use of the following TCP ports and may conflict with services 
 
 Stop any current services running on these ports before running the containers. A script to check for anything listening on these ports (`check-ports.sh` and `check-ports.bat`) is included in the community edition. Most conflicts will occur when a developer has something running on one of these ports. For example, if you have a MySQL server running you will likely get a conflict on port 3306.
 
-The sandbox also uses a number of internal redirects built into the user interface requiring the following addition to the hosts file (/etc/hosts on macOS and linux):
+**IMPORTANT: (YOU MUST DO THIS!)** The sandbox also uses a number of internal redirects built into the user interface that require the following DNS entries to be added to your operating systems hosts file (/etc/hosts on macOS and linux):
 ```
 127.0.0.1  keycloak
 127.0.0.1  sandbox-mysql
@@ -51,8 +51,7 @@ The sandbox also uses a number of internal redirects built into the user interfa
 127.0.0.1  r5
 127.0.0.1  static-content
 ```
-
-This tells the web browser on the local machine that, for example, “http://r4/”  will be found listening on the local machine… assuming the container is running.
+**WITHOUT THESE, THE SYSTEM WILL START UP BUT WILL ENTER A REDIRECT LOOP ON LOGIN** These tells the web browser on the local machine that, for example, “http://r4/”  will be found listening on the local machine instead of a real domain name over the Internet.
 
 ## Mac OS Install
 
