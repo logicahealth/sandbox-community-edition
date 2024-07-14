@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../sandbox-manager-v3"
+    },
+    {
+      "path": "../sandbox-manager-ui"
+    }
+  ],
+  "settings": {}
+}
